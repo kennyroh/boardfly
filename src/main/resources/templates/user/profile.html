@@ -1,0 +1,93 @@
+<!-- Filename: profile.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#profileForm").submit(function(event) {
+                event.preventDefault();
+                const email = $("#email").val().trim();
+                const password = $("#password").val().trim();
+                const fullName = $("#fullName").val().trim();
+
+                if (email.length === 0) {
+                    alert("Email is required.");
+                    return;
+                }
+
+                if (password.length < 4 || password.length > 100) {
+                    alert("Password must be between 4 and 100 characters.");
+                    return;
+                }
+
+                if (fullName.length === 0) {
+                    alert("Full Name is required.");
+                    return;
+                }
+
+                this.submit();
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <header class="masthead" style="background-image: url('/assets/img/contact-bg.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                    <div class="site-heading">
+                        <h1>User Profile</h1>
+                        <span class="subheading">Update your account information.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto">
+            <form id="profileForm" th:action="@{/user/profile}" th:object="${userDto}" method="post">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <input type="text" id="username" th:field="*{username}" readonly class="form-control" placeholder="Username"/>
+                        <label class="form-label" for="username">Username</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <input type="email" id="email" th:field="*{email}" required class="form-control" placeholder="Email"/>
+                        <label class="form-label" for="email">Email</label>
+                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <input type="password" id="password" th:field="*{password}" required class="form-control" placeholder="Password"/>
+                        <label class="form-label" for="password">Password</label>
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <input type="text" id="fullName" th:field="*{fullName}" required class="form-control" placeholder="Full Name"/>
+                        <label class="form-label" for="fullName">Full Name</label>
+                        <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+                    </div>
+                </div>
+                <div id="success"></div>
+                <div class="mb-3">
+                    <button type="submit">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

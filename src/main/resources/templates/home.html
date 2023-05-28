@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div>
+    <a th:href="@{/user/profile}">Profile</a>
+    <a th:href="@{/user/register}">Register</a>
+</div>
+<h1 th:text="${message}"></h1>
+<p>Here you can add any content you would like to display on your homepage.</p>
+</body>
+</html>

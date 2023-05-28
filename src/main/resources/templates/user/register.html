@@ -1,0 +1,115 @@
+<!-- Filename: register.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/layout.html}">
+<head>
+  <title>User Registration</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function validateForm() {
+      const username = $("#username").val().trim();
+      const email = $("#email").val().trim();
+      const password = $("#password").val().trim();
+      const fullName = $("#fullName").val().trim();
+
+      if (username.length < 3 || username.length > 20) {
+        alert("Username must be between 3 and 20 characters.");
+        return false;
+      }
+
+      if (!email.includes('@') || !email.includes('.')) {
+        alert("Please enter a valid email address.");
+        return false;
+      }
+
+      if (password.length < 4 || password.length > 100) {
+        alert("Password must be between 4 and 100 characters.");
+        return false;
+      }
+
+      if (fullName.length < 1 || fullName.length > 100) {
+        alert("Full Name must be between 1 and 100 characters.");
+        return false;
+      }
+
+      return true;
+    }
+
+    $(document).ready(function() {
+      $("#registrationForm").on("submit", function(event) {
+        event.preventDefault();
+        // Perform form validation and submit
+        if (validateForm()) {
+          this.submit();
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <header class="masthead" style="background-image: url('/assets/img/contact-bg.jpg');">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto position-relative">
+          <div class="site-heading">
+            <h1>Register</h1><span class="subheading">Sign up.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <p>User Registration</p>
+      <div th:if="${registrationError}" class="alert alert-danger" role="alert">
+        <p th:text="${registrationError}"></p>
+      </div>
+      <div th:if="${#fields.hasErrors('username')}" class="alert alert-danger" role="alert">
+        <p th:each="error : ${#fields.errors('username')}" th:text="${error}"></p>
+      </div>
+
+      <form id="registrationForm" th:action="@{/user/register}" th:object="${userDto}" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <div class="control-group">
+          <div class="form-floating controls mb-3">
+            <input id="username" class="form-control" type="text" th:field="*{username}" required placeholder="Username" />
+            <label class="form-label" for="username">Username</label>
+            <small class="form-text text-danger help-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="form-floating controls mb-3">
+            <input id="email" class="form-control" type="email" th:field="*{email}" required placeholder="Email Address" />
+            <label class="form-label">Email</label>
+            <small class="form-text text-danger help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="form-floating controls mb-3">
+            <input id="password" class="form-control" type="password" th:field="*{password}" required placeholder="Password" />
+            <label class="form-label">Password</label>
+            <small class="form-text text-danger help-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="form-floating controls mb-3">
+            <input id="fullName" class="form-control" type="text" th:field="*{fullName}" required placeholder="Full Name" />
+            <label class="form-label">Full Name</label>
+            <small class="form-text text-danger help-block" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
+          </div>
+        </div>
+        <div id="success"></div>
+        <div class="mb-3">
+          <button id="sendMessageButton" class="btn btn-primary" type="submit">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

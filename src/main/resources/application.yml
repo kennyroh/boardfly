@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/boardfly?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximumPoolSize: 10
+      connectionTimeout: 30000
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  thymeleaf:
+    cache: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  port: 8080
+
+jwt:
+  secret: shergdfgr#@#=-+!@#$%
+  expiration: 864000
+
+file:
+  upload-dir: upload
+
+logging:
+  level:
+    org:
+      springframework: WARN
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Registration</title>
+    <!-- Add your CSS and JS links here -->
+</head>
+<body>
+
+<div class="container">
+    <h1>Admin Registration</h1>
+    <form action="#" th:action="@{/admin/register}" th:object="${userDto}" method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Username" required>
+            <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password" required>
+            <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" placeholder="Full Name" required>
+            <span class="error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+        </div>
+        <input type="hidden" th:field="*{role}" th:value="${T(io.github.kennyroh.boardfly.entity.UserRole).ADMIN}" />
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+</body>
+</html>
